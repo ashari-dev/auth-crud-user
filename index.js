@@ -16,8 +16,10 @@ app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.get("/tes", verifyToken, async (req, res) => {
   try {
+    const id = req.params.id;
     const user = await pool.query(
-      `SELECT name, email FROM user WHERE id = ${req.user.id}`
+      `SELECT name, email FROM user WHERE id = $1`,
+      [id]
     );
     res.json(user.rows[0]);
   } catch (error) {
